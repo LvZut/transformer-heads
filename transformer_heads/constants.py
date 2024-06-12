@@ -7,7 +7,7 @@ activation_map is a dictionary that maps activation function names to their corr
 """
 
 import torch.nn as nn
-from transformers import GPT2Model, LlamaModel, MistralModel
+from transformers import GPT2Model, LlamaModel, MistralModel, PhiModel
 from transformer_heads.util.custom_loss import Masked_MSE_Loss
 
 activation_map = {"sigmoid": nn.Sigmoid, "linear": nn.Identity, "relu": nn.ReLU}
@@ -24,4 +24,5 @@ model_type_map = {
     "mistral": ("model", MistralModel),
     "gpt2": ("transformer", GPT2Model),
     "llama": ("model", LlamaModel),
+    "phi": ("model", PhiModel),
 }
