@@ -50,7 +50,13 @@ def evaluate_head_wise(
     for i, batch in tqdm(
         enumerate(loader), total=len(loader) * epochs, desc="Evaluating"
     ):
+        for batch_key in batch.keys():
+            batch[batch_key] = batch[batch_key].to(model.device)
+
         outputs: HeadedModelOutput = model(**batch)
+        print(
+            f"eval results:\nLabels: {batch['label']}\nPredictions: {outputs['preds_by_head']}"
+        )
         for key in outputs.loss_by_head:
             losses_by_head[key].append(float(outputs.loss_by_head[key].item()))
         losses.append(float(outputs.loss.item()))
@@ -127,6 +133,7 @@ def get_top_n_preds(
         dict[str, list[str]]: The top n predictions for each head.
     """
     input = tokenizer(text, return_tensors="pt")
+    input.to(model.device)
     output = model(**input)
     out = {}
     for head_name in output.preds_by_head:
