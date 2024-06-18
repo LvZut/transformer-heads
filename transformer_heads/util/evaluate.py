@@ -106,6 +106,7 @@ def get_some_preds(
                 p = torch.argmax(p).item()
                 ground_truths[key].append(int(batch[key][0].item()))
             else:
+                p = outputs.preds_by_head[key][0, -1, :]
                 ground_truths[key].append(batch[key])
             preds[key].append(p)
         if i >= n:
